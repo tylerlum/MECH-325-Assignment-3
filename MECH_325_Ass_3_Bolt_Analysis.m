@@ -7,9 +7,9 @@ F_t = 37.673; % lbf (force on motor shaft)
 t_1 = 0.5;  % in (Thickness of member 1)
 t_2 = 1;  % in (Thickness of member 2)
 
-%% Question Parameters %% GUESS SAE-5 (0.5 in diameter) (3 in length)
-d = 1;  % in (Bolt diameter)
-L = 3;  % in (Bolt Length)
+%% Question Parameters %% GUESS SAE-5 (0.5 in diameter) (2.5 in length)
+d = 0.5;  % in (Bolt diameter)
+L = 2.5;  % in (Bolt Length)
 A_t = 0.1419;  % in^2 (Threaded area) (Table 8-2) UNC
 w = 0.109;  % in (washer thickness) (Table A-32)
 H = 7/16;  % in (Nut height) (Table A-31)
@@ -17,7 +17,7 @@ E = 30 * 10^6;  % psi (Young's Modulus of steel bolt) (Table 8-8)
 
 S_e = 18.6 * 10^3;  % psi Endurance Strength (Table 8-17)
 S_ut = 120 * 10^3;  % psi Ultimate Strength (Table 8-9)
-S_p = 0; %Proof Strength 
+S_p = 85; % psi Proof Strength (Table 8-9)
 
 %% Motor Mount Dimensions
 y = 6;  % in (Height of where force is applied)
@@ -72,8 +72,6 @@ o_i = F_i / A_t;  % psi (preload stress)
 o_m = o_a + o_i;  % psi (mean stress)
 
 %% Calculate Safety Factor
-n_fs = S_e * (S_ut - o_i) / ((S_ut * o_a) + S_e * (o_m - o_i));  % Goodman safety factor (Eqn 8-38)
-
+n_fs = S_e * (S_ut - o_i) / ((S_ut * o_a) + S_e * (o_m - o_i))  % Goodman safety factor (Eqn 8-38)
 
 %% TODO: Cost calculation (idk how the grade cost equation works)
-
