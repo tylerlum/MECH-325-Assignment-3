@@ -2,50 +2,48 @@
 %% Bolt Stress Analysis
 
 %% Constants From Question
-F_t = 0; % lbf (force on motor shaft)
+F_t = 37.673; % lbf (force on motor shaft)
 t_1 = 0.5;  % in (Thickness of member 1)
 t_2 = 1;  % in (Thickness of member 2)
 
-%% Bolt sizing
+%% Question Parameters %%
 d = 1;  % in (Bolt diameter)
 L = 3;  % in (Bolt Length)
-A_d = pi * d^2 / 4;  % in^2 (Bolt shank area)
 A_t = 0;  % in^2 (Threaded area)
-L_t = 2*d + 1/4;  % in (8-13) (Threaded length)
-
-%% Washer and nut
-w = 0.1;  % in (Washer thickness)
+w = 0.1;  % in (washer thickness)
 H = 1;  % in (Nut height)
+E = 0;  % Young's Modulus
 
+S_e = 0;  % Endurance Strength
+S_ut = 0;  % Ultimate Strength
+
+%% Motor Mount Dimensions
+y = 6;  % in (Height of where force is applied)
+x = 6;  % in (distance from center to bolt)
+m = 6;  % in (length of motor)
+
+%% Bolt calculations
+A_d = pi * d^2 / 4;  % in^2 (Bolt shank area)
+L_t = 2*d + 1/4;  % in (8-13) (Threaded length)
 l = t_1 + t_2 + 2*w;
 L_d = L - L_t;
 
-%% Motor Mount Dimensions
-y = 6;
-m = 6;
-x = 6;
-
 %% Check if bolt has long enough threaded region
 if (L_d >= w + t_1 + t_2)
-    error = "L_d is too small, nut can't tighten on member"
+    error = "L_d is too big, nut can't tighten on member"
 end
 
 %% Check if bolt is long enough
-if (L <= l = H)
+if (L <= l + H)
     error = "L too small, can't put on nut"
 end
 
-    
-    
-
-
-
-%% Calculate Bolt Tension 
-R_b = F_t * (cos(30 * pi / 180) * (x + m / 2) + sin(30 * pi / 180))/ (2 * x);
+%% Calculate Bolt Tension (diagram in Force Analysis 1.png)
+R_b = F_t * (cos(30 * pi / 180) * (x + m / 2) + sin(30 * pi / 180)* y)/ (2 * x);
 
 %% Get stiffness 
-k_b = A_d * A_t * E / ((A_t * l_t) + (A_d * l_d));
-k_m = 0;
+k_b = A_d * A_t * E / ((A_t * l_t) + (A_d * l_d));  % bolt stiffness
+k_m = 0;  % member stiffness (not sure how to calculate yet)
 
 %% Calculate Safety Factor
 F_p = A_t * S_p;
