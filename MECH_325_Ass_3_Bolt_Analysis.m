@@ -11,12 +11,12 @@ t_2 = 1;  % in (Thickness of member 2)
 d = 1;  % in (Bolt diameter)
 L = 3;  % in (Bolt Length)
 A_t = 0;  % in^2 (Threaded area) (Table 8-2)
-w = 0.1;  % in (washer thickness)
-H = 1;  % in (Nut height)
+w = 0.1;  % in (washer thickness) (Table A-32)
+H = 1;  % in (Nut height) (Table A-31)
 E = 30 * 10^6;  % psi (Young's Modulus of steel bolt) (Table 8-8)
 
 S_e = 0;  % Endurance Strength (Table 8-17)
-S_ut = 0;  % Ultimate Strength
+S_ut = 0;  % Ultimate Strength (Table 8-9)
 
 %% Motor Mount Dimensions
 y = 6;  % in (Height of where force is applied)
