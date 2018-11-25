@@ -17,6 +17,7 @@ E = 30 * 10^6;  % psi (Young's Modulus of steel bolt) (Table 8-8)
 
 S_e = 0;  % Endurance Strength (Table 8-17)
 S_ut = 0;  % Ultimate Strength (Table 8-9)
+S_p = 0; %Proof Strength 
 
 %% Motor Mount Dimensions
 y = 6;  % in (Height of where force is applied)
@@ -45,7 +46,15 @@ P = F_t * (cos(30 * pi / 180) * (x + m / 2) + sin(30 * pi / 180) * y) / (2*x);  
 
 %% Get stiffness 
 k_b = A_d * A_t * E / ((A_t * l_t) + (A_d * l_d));  % lbf/in (bolt stiffness) (Table 8-7)
-k_m = 0;  % member stiffness (Section 8-5) (Eqn 8-18) (not sure how to calculate yet)
+
+%Modulus of Elasticity (psi),Head diameter(in), Bolt diameter(in), Thickness of member (add thickness of washer) (in);
+%Assume washer thicnkess is negligable. For K1 and K2 assume head diameter
+%is 1.5 times bolt diameter
+%See example 8-2
+k1 = oneMemberStiffness(E,1.5*d,d,0.5); %Top plate
+k2 = oneMemberStiffness(E,1.5*d,d,0.75); %Bottom plate
+k3 = oneMemberStiffness(E,(3*d*tan(30 * pi / 180) + d),d,0.25); %Intermediate
+k_m = (k1*k2*k3)/(k1*k2 + k1*k3 + k2*k3);  
 
 %% Force calculations
 C = k_b / (k_b + k_m);  % fraction of external load carried by bolt (Section 8-7 f)
