@@ -10,12 +10,12 @@ t_2 = 1;  % in (Thickness of member 2)
 %% Question Parameters %%
 d = 1;  % in (Bolt diameter)
 L = 3;  % in (Bolt Length)
-A_t = 0;  % in^2 (Threaded area)
+A_t = 0;  % in^2 (Threaded area) (Table 8-2)
 w = 0.1;  % in (washer thickness)
 H = 1;  % in (Nut height)
 E = 30 * 10^6;  % psi (Young's Modulus of steel bolt) (Table 8-8)
 
-S_e = 0;  % Endurance Strength
+S_e = 0;  % Endurance Strength (Table 8-17)
 S_ut = 0;  % Ultimate Strength
 
 %% Motor Mount Dimensions
@@ -41,17 +41,26 @@ if (L <= l + H)
 end
 
 %% Calculate Bolt Tension (diagram in Force Analysis 1.png)
-R_b = F_t * (cos(30 * pi / 180) * (x + m / 2) + sin(30 * pi / 180) * y) / (2*x);  % lbf
+P = F_t * (cos(30 * pi / 180) * (x + m / 2) + sin(30 * pi / 180) * y) / (2*x);  % lbf
 
 %% Get stiffness 
 k_b = A_d * A_t * E / ((A_t * l_t) + (A_d * l_d));  % lbf/in (bolt stiffness) (Table 8-7)
-k_m = 0;  % member stiffness (not sure how to calculate yet)
+k_m = 0;  % member stiffness (Section 8-5) (Eqn 8-18) (not sure how to calculate yet)
 
-%% Calculate Safety Factor
+%% Force calculations
+C = k_b / (k_b + k_m);  % fraction of external load carried by bolt (Section 8-7 f)
 F_p = A_t * S_p;
 F_i = 0.9 * F_p;
+% might want to ensure F_m > 0 as per Eqn 8-25
+
+%% Stress calculations (Eqns 8-39 to 8-41) We have case P_max = P and P_min = 0, so matches this
+o_a = C * P / (2 * A_t);  % psi (alternating stress)
+o_i = F_i / A_t;  % psi (preload stress)
+o_m = o_a + o_i;  % psi (mean stress)
+
+%% Calculate Safety Factor
+n_fs = S_e * (S_ut - o_i) / ((S_ut * o_a) + S_e * (o_m - o_i));  % Goodman safety factor (Eqn 8-38)
 
 
-n_fs = S_e * (S_ut - o_i) / ((S_ut * o_a) + S_e * (o_m - o_i));
-
+%% TODO: Cost calculation (idk how the grade cost equation works)
 
