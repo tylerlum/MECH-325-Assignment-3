@@ -30,9 +30,10 @@ L_t = 2*d + 1/4;  % in (Threaded length) (Eqn 8-13) (L<6 for sure)
 l = t_1 + t_2 + 2*w;  % in (grip length) (Table 8-7)
 L_d = L - L_t;  % in (Shank/Unthreaded length) (Table 8-7)
 l_d = L_d;  % in (Unthreaded length of grip) (Table 8-7)
+l_t = l - l-d;  % in (threaded length of grip) (Table 8-7)
 
 %% Check if bolt has long enough threaded region
-if (L_d >= w + t_1 + t_2)
+if (L_d >= 2*w + t_1 + t_2)
     disp('L_d is too big, nut can not tighten on member')
 end
 
