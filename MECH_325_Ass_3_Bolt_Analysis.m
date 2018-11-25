@@ -17,7 +17,7 @@ E = 30 * 10^6;  % psi (Young's Modulus of steel bolt) (Table 8-8)
 
 S_e = 18.6 * 10^3;  % psi Endurance Strength (Table 8-17)
 S_ut = 120 * 10^3;  % psi Ultimate Strength (Table 8-9)
-S_p = 85; % psi Proof Strength (Table 8-9)
+S_p = 85 * 10^3; % psi Proof Strength (Table 8-9)
 
 %% Motor Mount Dimensions
 y = 6;  % in (Height of where force is applied)
@@ -33,7 +33,7 @@ l_d = L_d;  % in (Unthreaded length of grip) (Table 8-7)
 l_t = l - l-d;  % in (threaded length of grip) (Table 8-7)
 
 %% Check if bolt has long enough threaded region
-if (L_d >= 2*w + t_1 + t_2)
+if (L_d > l)
     disp('L_d is too big, nut can not tighten on member')
 end
 
