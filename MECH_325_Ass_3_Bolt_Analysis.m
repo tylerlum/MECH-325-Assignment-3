@@ -33,12 +33,12 @@ l_d = L_d;  % in (Unthreaded length of grip) (Table 8-7)
 
 %% Check if bolt has long enough threaded region
 if (L_d >= w + t_1 + t_2)
-    error = "L_d is too big, nut can't tighten on member"
+    disp('L_d is too big, nut can not tighten on member')
 end
 
 %% Check if bolt is long enough
 if (L <= l + H)
-    error = "L too small, can't put on nut"
+    disp('L too small, can not put on nut')
 end
 
 %% Calculate Bolt Tension (diagram in Force Analysis 1.png)
@@ -61,7 +61,10 @@ C = k_b / (k_b + k_m);  % fraction of external load carried by bolt (Section 8-7
 F_p = A_t * S_p;
 F_i = 0.9 * F_p;
 % might want to ensure F_m > 0 as per Eqn 8-25
-
+F_m = C*P*k_m/k_b;
+if (F_m <= 0)
+    disp('F_m is less than 0, separation has occured')
+end
 %% Stress calculations (Eqns 8-39 to 8-41) We have case P_max = P and P_min = 0, so matches this
 o_a = C * P / (2 * A_t);  % psi (alternating stress)
 o_i = F_i / A_t;  % psi (preload stress)
