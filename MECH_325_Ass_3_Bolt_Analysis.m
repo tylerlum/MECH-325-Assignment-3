@@ -20,6 +20,8 @@ E = 30 * 10^6;  % psi (Young's Modulus of steel bolt) (Table 8-8)
 S_e = 1.86 * 10^3;  % psi Endurance Strength (Table 8-17) Assume 10% of SAE-5
 S_ut = 60 * 10^3;  % psi Ultimate Strength (Table 8-9)
 S_p = 33 * 10^3; % psi Proof Strength (Table 8-9)
+S_y = 32 * 10^3;  % psi Lower bound of Yield Strength of steel
+S_ys = 1/sqrt(3) * S_y;  % psi Shear Yield Strength of steel
 
 % Motor Mount Dimensions
 y = 10;  % in (Height of where force is applied)
@@ -74,10 +76,27 @@ o_m = o_a + o_i;  % psi (mean stress)
 % Bolt tension stress
 n_fs_tension_bolt = S_e * (S_ut - o_i) / ((S_ut * o_a) + S_e * (o_m - o_i))  % Goodman safety factor (Eqn 8-38)
 
+% Yielding factor of safety
+n_p = S_p * A_t / (C * P + F_i)  % expect close to unity
 
-% Shear stress
+% Load factor
+n_L = (S_p * A_t - F_i) / (C * P)
+
+% Joint Separation factor of safety
+n_0 = F_i / (P * (1-C))
+
+% Bolt shear stress
 V = F_t * sin(30 * pi/180) / 4;  % lbf (Shear force per bolt)
-o_member = V / ((t_1 + t_2)*d);
+tau_bolt = V / A_d;  % psi
+n_fs_shear_bolt = S_ys / tau_bolt
+
+% Tensile stress on members
+o_tensile_member = 2 * V / ((t_1 + t_2)*(14-2*d));  % psi
+n_fs_tensile_member = S_y / o_tensile_member
+
+% Bearing Stress on members
+o_bearing_member = V / ((t_1 + t_2)*d);  % psi
+n_fs_bearing_member = S_y / o_bearing_member
 
 %% Cost calculation
 SAE_grade_1_cost = 1;
