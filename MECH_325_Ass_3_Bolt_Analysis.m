@@ -30,7 +30,7 @@ L_t = 2*d + 1/4;  % in (Threaded length) (Eqn 8-13) (L<6 for sure)
 l = t_1 + t_2 + 2*w;  % in (grip length) (Table 8-7)
 L_d = L - L_t;  % in (Shank/Unthreaded length) (Table 8-7)
 l_d = L_d;  % in (Unthreaded length of grip) (Table 8-7)
-l_t = l - l-d;  % in (threaded length of grip) (Table 8-7)
+l_t = l - l_d;  % in (threaded length of grip) (Table 8-7)
 
 %% Check if bolt has long enough threaded region
 if (L_d > l)
@@ -55,7 +55,7 @@ k_b = A_d * A_t * E / ((A_t * l_t) + (A_d * l_d));  % lbf/in (bolt stiffness) (T
 k1 = oneMemberStiffness(E,1.5*d,d,0.5); %Top plate
 k2 = oneMemberStiffness(E,1.5*d,d,0.75); %Bottom plate
 k3 = oneMemberStiffness(E,(3*d*tan(30 * pi / 180) + d),d,0.25); %Intermediate
-k_m = (k1*k2*k3)/(k1*k2 + k1*k3 + k2*k3);  
+k_m = (k1*k2*k3)/(k1*k2 + k1*k3 + k2*k3);
 
 %% Force calculations
 C = k_b / (k_b + k_m);  % fraction of external load carried by bolt (Section 8-7 f)
@@ -67,9 +67,9 @@ if (F_m <= 0)
     disp('F_m is less than 0, separation has occured')
 end
 %% Stress calculations (Eqns 8-39 to 8-41) We have case P_max = P and P_min = 0, so matches this
-o_a = C * P / (2 * A_t);  % psi (alternating stress)
-o_i = F_i / A_t;  % psi (preload stress)
-o_m = o_a + o_i;  % psi (mean stress)
+o_a = C * P / (2 * A_t)  % psi (alternating stress)
+o_i = F_i / A_t  % psi (preload stress)
+o_m = o_a + o_i  % psi (mean stress)
 
 %% Calculate Safety Factor
 n_fs = S_e * (S_ut - o_i) / ((S_ut * o_a) + S_e * (o_m - o_i))  % Goodman safety factor (Eqn 8-38)
